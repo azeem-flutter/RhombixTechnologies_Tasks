@@ -1,7 +1,10 @@
+import 'package:campuspulse/features/auth/screens/register/register.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/constants/text_strings.dart';
+import 'package:campuspulse/widgets/auth_footer_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -75,25 +78,10 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: CSizes.spaceBtwitems),
               // Don't have an Account
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    CTexts.dontHaveAnaccount,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  const SizedBox(width: CSizes.xs),
-
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      CTexts.signUp,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: CColors.primary),
-                    ),
-                  ),
-                ],
+              AuthFooterText(
+                footText: CTexts.dontHaveAnaccount,
+                authText: CTexts.signUp,
+                onPressed: () => Get.to(() => RegisterScreen()),
               ),
             ],
           ),
