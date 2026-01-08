@@ -1,4 +1,5 @@
 import 'package:campuspulse/features/home/screens/home.dart';
+import 'package:campuspulse/features/notification/screens/notification_screen.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,7 @@ class NavigationMenu extends StatelessWidget {
 
             NavigationDestination(
               icon: Icon(Icons.notifications_outlined),
-              label: 'Alert',
+              label: 'Notification',
               selectedIcon: Icon(
                 Icons.notifications,
                 color: CColors.primary,
@@ -53,8 +54,8 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final selectedIndex = 0.obs;
   final screens = [
-    HomeScreen(),
-    Container(color: Colors.green),
+    const HomeScreen(),
+    NotificationScreen(),
     Container(color: Colors.blue),
   ].obs;
 

@@ -4,6 +4,7 @@ import 'package:campuspulse/features/home/screens/widgets/event_form.dart';
 import 'package:campuspulse/features/home/screens/widgets/featured_event_widget.dart';
 import 'package:campuspulse/features/home/screens/widgets/header_widget.dart';
 import 'package:campuspulse/features/home/screens/widgets/tab_selector_widget.dart';
+import 'package:campuspulse/features/notification/screens/notification_screen.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -53,9 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
           // Header Widget
           HeaderWidget(
             userName: 'Student',
-            onNotificationTap: () {
-              // Handle notification tap
-            },
+            onNotificationTap: () =>
+                Get.to(() => NotificationScreen(backArrow: true)),
           ),
 
           const SizedBox(height: CSizes.spaceBtwSections),
