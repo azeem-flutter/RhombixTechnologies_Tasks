@@ -1,4 +1,5 @@
 import 'package:campuspulse/features/auth/screens/register/register.dart';
+import 'package:campuspulse/navigation_menu.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/constants/text_strings.dart';
@@ -72,8 +73,8 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Login'),
+                  onPressed: () => Get.to(() => NavigationMenu()),
+                  child: const Text('Sign In'),
                 ),
               ),
               const SizedBox(height: CSizes.spaceBtwitems),
