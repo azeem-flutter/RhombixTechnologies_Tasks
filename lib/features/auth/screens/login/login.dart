@@ -1,8 +1,10 @@
+import 'package:campuspulse/features/auth/controllers/login_controller/login_controller.dart';
 import 'package:campuspulse/features/auth/screens/register/register.dart';
 import 'package:campuspulse/navigation_menu.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/constants/text_strings.dart';
+import 'package:campuspulse/utils/validator/validation.dart';
 import 'package:campuspulse/widgets/auth_footer_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -38,45 +41,70 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: CSizes.spaceBtwSections),
 
               // Email Field
-              Text(
-                'Email',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: CColors.black),
-              ),
-              const SizedBox(height: CSizes.sm),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  prefixIcon: Icon(Icons.mail),
-                ),
-              ),
-              const SizedBox(height: CSizes.spaceBtwitems),
-              // Password Field
-              Text(
-                'Password',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: CColors.black),
-              ),
-              const SizedBox(height: CSizes.sm),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Enter your password',
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: Icon(Icons.password_rounded),
-                ),
-              ),
-              const SizedBox(height: CSizes.spaceBtwSections),
+              Form(
+                key: controller.loginKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: CColors.black),
+                    ),
+                    const SizedBox(height: CSizes.sm),
+                    TextFormField(
+                      controller: controller.email,
+                      validator: (value) => CValidator.validateEmail(value),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your email',
+                        prefixIcon: Icon(Icons.mail),
+                      ),
+                    ),
+                    const SizedBox(height: CSizes.spaceBtwitems),
+                    // Password Field
+                    Text(
+                      'Password',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: CColors.black),
+                    ),
+                    const SizedBox(height: CSizes.sm),
+                    Obx(
+                      () => TextFormField(
+                        obscureText: controller.hidePassword.value,
+                        controller: controller.password,
+                        validator: (value) =>
+                            CValidator.validatePassword(value),
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          prefixIcon: Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            onPressed: () => controller.hidePassword.value =
+                                !controller.hidePassword.value,
+                            icon: Icon(
+                              controller.hidePassword.value
+                                  ? Iconsax.eye_slash
+                                  : Iconsax.eye,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: CSizes.spaceBtwSections),
 
-              // Login Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Get.to(() => NavigationMenu()),
-                  child: const Text('Sign In'),
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => controller.emailAndPasswordSignIn(),
+                        child: const Text('Sign In'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               const SizedBox(height: CSizes.spaceBtwitems),
               // Don't have an Account
               AuthFooterText(

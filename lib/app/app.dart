@@ -1,3 +1,4 @@
+import 'package:campuspulse/bindings/general_bindings.dart';
 import 'package:campuspulse/features/auth/screens/onboarding/onboarding.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/theme/theme.dart';
@@ -10,6 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: GeneralBindings(),
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: CAppTheme.lightTheme,

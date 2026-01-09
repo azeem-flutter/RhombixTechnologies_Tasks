@@ -1,3 +1,4 @@
+import 'package:campuspulse/services/authentication_repository.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/helpers/helper_function.dart';
@@ -236,6 +237,14 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              const SizedBox(height: CSizes.spaceBtwitems),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => AuthenticationRepository.instance.logout(),
+                  child: Text('Logout'),
                 ),
               ),
             ],
