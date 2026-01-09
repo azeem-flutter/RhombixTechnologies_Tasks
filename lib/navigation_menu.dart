@@ -1,5 +1,6 @@
 import 'package:campuspulse/features/home/screens/home.dart';
 import 'package:campuspulse/features/notification/screens/notification_screen.dart';
+import 'package:campuspulse/features/profile/screens/profile.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class NavigationController extends GetxController {
   final screens = [
     const HomeScreen(),
     NotificationScreen(),
-    Container(color: Colors.blue),
+    const ProfileSettingsScreen(),
   ].obs;
 
   void selectedIndexFunction(int index) {
