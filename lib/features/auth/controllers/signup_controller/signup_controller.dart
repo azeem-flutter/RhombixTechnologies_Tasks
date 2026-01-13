@@ -1,6 +1,10 @@
-import 'package:campuspulse/features/notification/models/user_model.dart';
+import 'package:campuspulse/features/auth/models/user_model.dart';
+import 'package:campuspulse/features/auth/screens/login/login.dart';
 import 'package:campuspulse/services/authentication_repository.dart';
 import 'package:campuspulse/services/user_repository.dart';
+import 'package:campuspulse/utils/constants/image_string.dart';
+import 'package:campuspulse/utils/loader/full_screen_loader.dart';
+import 'package:campuspulse/utils/loader/loader.dart';
 import 'package:campuspulse/utils/network/network_manager.dart';
 
 import 'package:flutter/material.dart';
@@ -21,48 +25,29 @@ class SignupController extends GetxController {
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
   //Signup
   Future<void> signup() async {
-    void showLoader() {
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (_) => const Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    void hideLoader() {
-      if (Get.isDialogOpen == true) {
-        Get.back();
-      }
-    }
-
     try {
-      // Check Internet
+      //Start Loading
+      CFullScreenLoader.openLoadingDialog(
+        'we are processing your information',
+        CImageString.loader,
+      );
+      // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        ScaffoldMessenger.of(
-          Get.context!,
-        ).showSnackBar(const SnackBar(content: Text('No Internet Connection')));
+        CFullScreenLoader.stopLoading();
         return;
       }
 
-      // Validate form BEFORE showing loader
+      // Form Validation
       if (!signupFormKey.currentState!.validate()) {
-        ScaffoldMessenger.of(
-          Get.context!,
-        ).showSnackBar(const SnackBar(content: Text('Invalid input')));
+        CFullScreenLoader.stopLoading();
         return;
       }
-
-      // Confirm password check
+      // Confirm Password
       if (password.text.trim() != confrimPassword.text.trim()) {
-        ScaffoldMessenger.of(
-          Get.context!,
-        ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+        CFullScreenLoader.stopLoading();
         return;
       }
-
-      // Validation passed — now show loader
-      showLoader();
 
       // Firebase Auth Signup
       final userCredential = await AuthenticationRepository.instance
@@ -74,23 +59,19 @@ class SignupController extends GetxController {
         email: email.text.trim(),
         username: userName.text.trim(),
       );
-
-      await Get.put(UserRepository()).saveUserRecord(newUser);
-
-      hideLoader();
-
+      // Remove Loader
+      CFullScreenLoader.stopLoading();
+      await UserRepository.instance.saveUserRecord(newUser);
+      // show Success Message
+      CLoader.successSnackBar(
+        title: 'Congratualations',
+        message: 'Your account has been created.',
+      );
+      // Go to home screen
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
-      // Ensure loader is hidden
-      hideLoader();
-      ScaffoldMessenger.of(
-        Get.context!,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
-    } finally {
-      // Double-check loader is hidden
-      if (Get.isDialogOpen == true) {
-        Get.back();
-      }
+      CFullScreenLoader.stopLoading();
+      CLoader.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }
 }

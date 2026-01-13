@@ -1,29 +1,19 @@
+import 'package:campuspulse/features/home/models/event_model.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 
 class EventCardWidget extends StatelessWidget {
-  final String title;
-  final String date;
-  final String time;
-  final String location;
-  final bool isImportant;
+  final EventModel event;
   final VoidCallback? onTap;
 
-  const EventCardWidget({
-    Key? key,
-    required this.title,
-    required this.date,
-    required this.time,
-    required this.location,
-    this.isImportant = false,
-    this.onTap,
-  }) : super(key: key);
+  const EventCardWidget({super.key, required this.event, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final dark = CHelperFunctions.isDarkMode(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -33,13 +23,6 @@ class EventCardWidget extends StatelessWidget {
           color: dark ? CColors.darkGrey : Colors.white,
           borderRadius: BorderRadius.circular(CSizes.md),
           border: Border.all(color: CColors.grey),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: .04),
-              blurRadius: 10,
-              offset: Offset(0, 4),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -49,7 +32,11 @@ class EventCardWidget extends StatelessWidget {
                 color: CColors.primary,
                 borderRadius: BorderRadius.circular(CSizes.sm),
               ),
-              child: Icon(Icons.calendar_month, color: CColors.white, size: 28),
+              child: const Icon(
+                Icons.calendar_month,
+                color: CColors.white,
+                size: 28,
+              ),
             ),
             const SizedBox(width: CSizes.md),
             Expanded(
@@ -57,15 +44,15 @@ class EventCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          event.title,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: CColors.black),
                         ),
                       ),
-                      if (isImportant)
+                      if (event.isImportant)
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
@@ -75,31 +62,34 @@ class EventCardWidget extends StatelessWidget {
                             color: CColors.primary,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Important',
-                            style: Theme.of(context).textTheme.labelLarge
-                                ?.copyWith(color: CColors.white),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                     ],
                   ),
                   const SizedBox(height: CSizes.sm),
                   Text(
-                    '$date  •  $time',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    '${event.date} • ${event.time}',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: CColors.black),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on_outlined,
                         size: 16,
                         color: CColors.darkGrey,
                       ),
                       const SizedBox(width: CSizes.xs),
                       Text(
-                        location,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        event.location,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(color: CColors.black),
                       ),
                     ],
                   ),

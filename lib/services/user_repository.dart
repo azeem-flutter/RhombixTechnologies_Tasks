@@ -1,4 +1,4 @@
-import 'package:campuspulse/features/notification/models/user_model.dart';
+import 'package:campuspulse/features/auth/models/user_model.dart';
 import 'package:campuspulse/services/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -19,10 +19,12 @@ class UserRepository extends GetxController {
   // Function to fetch user details based on User ID
   Future<UserModel> fetchUserDetails() async {
     try {
-      final documentSnapshot = await _db
-          .collection('Users')
-          .doc(AuthenticationRepository.instance.authUser?.uid)
-          .get();
+      final userId = AuthenticationRepository.instance.authUser?.uid;
+
+      if (userId == null) {
+        return UserModel.empty();
+      }
+      final documentSnapshot = await _db.collection('Users').doc(userId).get();
       if (documentSnapshot.exists) {
         return UserModel.fromSnapshot(documentSnapshot);
       } else {

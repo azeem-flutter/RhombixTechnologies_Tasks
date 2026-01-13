@@ -1,7 +1,10 @@
+import 'package:campuspulse/features/notification/controller/notification_controller.dart';
+import 'package:campuspulse/services/notification_reponsitory.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
 import 'package:campuspulse/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String userName;
@@ -34,37 +37,55 @@ class HeaderWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello, $userName',
-                style: Theme.of(context).textTheme.headlineMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                userName,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineMedium?.copyWith(color: CColors.dark),
               ),
               SizedBox(height: CSizes.sm),
               Text(
                 'Stay updated with campus events',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: CColors.black),
               ),
             ],
           ),
-          Stack(
-            children: [
-              IconButton(
+          Obx(() {
+            try {
+              final hasUnread = NotificationController.instance.hasUnread;
+              return Stack(
+                children: [
+                  IconButton(
+                    onPressed: onNotificationTap,
+                    icon: Icon(Icons.notifications_outlined, size: 28),
+                    color: dark ? CColors.white : CColors.black,
+                  ),
+                  if (hasUnread)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: CColors.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            } catch (e) {
+              return IconButton(
                 onPressed: onNotificationTap,
                 icon: Icon(Icons.notifications_outlined, size: 28),
                 color: dark ? CColors.white : CColors.black,
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: CColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
+              );
+            }
+          }),
         ],
       ),
     );

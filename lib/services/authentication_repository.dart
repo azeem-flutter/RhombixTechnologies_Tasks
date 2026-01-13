@@ -21,11 +21,9 @@ class AuthenticationRepository extends GetxController {
 
   User? get authUser => _auth.currentUser;
 
-  // Called from main.dart on app lanuch
   @override
   void onReady() {
-    FlutterNativeSplash.remove();
-    screenRedirect();
+    // screenRedirect() is now handled by SplashScreen
   }
 
   // Function to show Relevant Screen
@@ -36,7 +34,6 @@ class AuthenticationRepository extends GetxController {
     } else {
       // Local Storage
       if (kIsWeb) {
-        // On web, default to onboarding for first time
         if (_isFirstTimeWeb) {
           _isFirstTimeWeb = false;
           Get.offAll(const OnboardingScreen());
@@ -50,8 +47,6 @@ class AuthenticationRepository extends GetxController {
               ? Get.offAll(() => const LoginScreen())
               : Get.offAll(const OnboardingScreen());
         } catch (e) {
-          // If GetStorage fails, default to onboarding
-          print('GetStorage operation failed: $e');
           Get.offAll(const OnboardingScreen());
         }
       }

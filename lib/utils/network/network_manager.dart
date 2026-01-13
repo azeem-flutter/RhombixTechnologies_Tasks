@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:campuspulse/utils/loader/loader.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class NetworkManager extends GetxController {
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     _connectivityStatus.value = result;
     if (_connectivityStatus.value == ConnectivityResult.none) {
-      SnackBar(content: Text('No Internet Connection'));
+      CLoader.waringSnackBar(title: 'No Internet Connection');
     }
   }
 

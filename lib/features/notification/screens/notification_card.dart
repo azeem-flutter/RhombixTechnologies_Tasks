@@ -7,13 +7,14 @@ class NotificationCard extends StatelessWidget {
   final String title;
   final String description;
   final String timeAgo;
+  final bool isRead;
 
   const NotificationCard({
     Key? key,
-
     required this.title,
     required this.description,
     required this.timeAgo,
+    this.isRead = false,
   }) : super(key: key);
 
   @override
@@ -63,28 +64,41 @@ class NotificationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    title,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: CColors.black),
+                  ),
                   const SizedBox(height: CSizes.xs),
                   Text(
                     description,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: CColors.black),
                   ),
                   const SizedBox(height: CSizes.sm),
-                  Text(timeAgo, style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    timeAgo,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: CColors.black),
+                  ),
                 ],
               ),
             ),
 
             // Dot Indicator
-            Container(
-              width: 8,
-              height: 8,
-              margin: const EdgeInsets.only(top: CSizes.xs),
-              decoration: BoxDecoration(
-                color: CColors.primary,
-                shape: BoxShape.circle,
+            if (!isRead)
+              Container(
+                width: 8,
+                height: 8,
+                margin: const EdgeInsets.only(top: CSizes.xs),
+                decoration: BoxDecoration(
+                  color: CColors.primary,
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
           ],
         ),
       ),

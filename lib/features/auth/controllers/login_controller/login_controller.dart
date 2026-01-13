@@ -1,4 +1,7 @@
 import 'package:campuspulse/services/authentication_repository.dart';
+import 'package:campuspulse/utils/constants/image_string.dart';
+import 'package:campuspulse/utils/loader/full_screen_loader.dart';
+import 'package:campuspulse/utils/loader/loader.dart';
 import 'package:campuspulse/utils/network/network_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,67 +16,36 @@ class LoginController extends GetxController {
 
   // Email and Password SignIn
   Future<void> emailAndPasswordSignIn() async {
-    // Helper: open loader
-    void showLoader() {
-      showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (_) => const Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    // Helper: close loader
-    void hideLoader() {
-      if (Get.isDialogOpen == true) {
-        Get.back();
-      }
-    }
-
     try {
       // Start Loading
-      showLoader();
-
-      // Check Internet
+      CFullScreenLoader.openLoadingDialog(
+        'Logging you in...',
+        CImageString.loader,
+      );
+      // check Internet connection
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        hideLoader();
-        ScaffoldMessenger.of(
-          Get.context!,
-        ).showSnackBar(const SnackBar(content: Text('No internet connection')));
+        CFullScreenLoader.stopLoading();
         return;
       }
-
-      // Validate Form
+      // Form Validation
       if (!loginKey.currentState!.validate()) {
-        hideLoader();
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          const SnackBar(content: Text('Please enter valid email & password')),
-        );
+        CFullScreenLoader.stopLoading();
         return;
       }
-
       // Login user
       await AuthenticationRepository.instance.signInWithEmailAndPassword(
         email.text.trim(),
         password.text.trim(),
       );
-
-      // Stop loading
-      hideLoader();
+      // Remove Loader
+      CFullScreenLoader.stopLoading();
 
       // Redirect
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
-      // Ensure loader is hidden
-      hideLoader();
-      ScaffoldMessenger.of(
-        Get.context!,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
-    } finally {
-      // Double-check loader is hidden
-      if (Get.isDialogOpen == true) {
-        Get.back();
-      }
+      CFullScreenLoader.stopLoading();
+      CLoader.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }
 }

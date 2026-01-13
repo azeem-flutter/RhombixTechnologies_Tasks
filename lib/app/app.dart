@@ -1,5 +1,5 @@
 import 'package:campuspulse/bindings/general_bindings.dart';
-import 'package:campuspulse/features/auth/screens/onboarding/onboarding.dart';
+import 'package:campuspulse/features/auth/screens/splash/splash.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +16,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: CAppTheme.lightTheme,
       darkTheme: CAppTheme.darkTheme,
-      home: const Scaffold(
-        backgroundColor: CColors.primary,
-        body: OnboardingScreen(),
-      ),
+      home: const SplashScreen(),
     );
   }
 }

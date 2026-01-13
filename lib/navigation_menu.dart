@@ -1,4 +1,5 @@
 import 'package:campuspulse/features/home/screens/home.dart';
+import 'package:campuspulse/features/notification/controller/notification_controller.dart';
 import 'package:campuspulse/features/notification/screens/notification_screen.dart';
 import 'package:campuspulse/features/profile/screens/profile.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
@@ -11,6 +12,7 @@ class NavigationMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavigationController());
+    Get.put(NotificationController());
     return Obx(
       () => Scaffold(
         bottomNavigationBar: NavigationBar(
@@ -55,7 +57,7 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final selectedIndex = 0.obs;
   final screens = [
-    const HomeScreen(),
+    HomeScreen(),
     NotificationScreen(),
     const ProfileSettingsScreen(),
   ].obs;

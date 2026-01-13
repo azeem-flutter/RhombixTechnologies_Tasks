@@ -40,7 +40,7 @@ class TabSelectorWidget extends StatelessWidget {
                   tabs[index],
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isSelected ? CColors.white : CColors.black,
+                    color: isSelected ? CColors.white : CColors.darkGrey,
                   ),
                 ),
               ),
