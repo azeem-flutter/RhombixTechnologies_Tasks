@@ -1,6 +1,8 @@
 import 'package:campuspulse/features/home/models/event_model.dart';
 import 'package:campuspulse/utils/constants/colors.dart';
 import 'package:campuspulse/utils/constants/sizes.dart';
+import 'package:campuspulse/utils/helpers/helper_function.dart';
+import 'package:campuspulse/widgets/Icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -17,9 +19,9 @@ class EventDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _row(Icons.calendar_month, event.date),
-            _row(Icons.access_time, event.time),
-            _row(Icons.location_on, event.location),
+            IconWidget(icon: Icons.calendar_month, text: event.date),
+            IconWidget(icon: Icons.access_time, text: event.time),
+            IconWidget(icon: Icons.location_on, text: event.location),
             const SizedBox(height: CSizes.lg),
 
             if (event.isImportant)
@@ -35,15 +37,6 @@ class EventDetailScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _row(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: [Icon(icon, size: 20), const SizedBox(width: 10), Text(text)],
       ),
     );
   }

@@ -82,7 +82,7 @@ class RegisterScreen extends StatelessWidget {
                     const SizedBox(height: CSizes.sm),
                     Obx(
                       () => TextFormField(
-                        obscureText: controller.hideconfirmPassword.value,
+                        obscureText: controller.hidePassword.value,
                         controller: controller.password,
                         validator: (value) =>
                             CValidator.validatePassword(value),
@@ -112,7 +112,7 @@ class RegisterScreen extends StatelessWidget {
                     const SizedBox(height: CSizes.sm),
                     Obx(
                       () => TextFormField(
-                        obscureText: controller.hidePassword.value,
+                        obscureText: controller.hideconfirmPassword.value,
                         controller: controller.confrimPassword,
                         validator: (value) =>
                             CValidator.validatePassword(value),

@@ -59,15 +59,19 @@ class SignupController extends GetxController {
         email: email.text.trim(),
         username: userName.text.trim(),
       );
-      // Remove Loader
-      CFullScreenLoader.stopLoading();
+      // Save user data
       await UserRepository.instance.saveUserRecord(newUser);
-      // show Success Message
+
+      // Stop loading AFTER saving
+      CFullScreenLoader.stopLoading();
+
+      // Show success message
       CLoader.successSnackBar(
-        title: 'Congratualations',
+        title: 'Congratulations',
         message: 'Your account has been created.',
       );
-      // Go to home screen
+
+      // Redirect once
       AuthenticationRepository.instance.screenRedirect();
     } catch (e) {
       CFullScreenLoader.stopLoading();
